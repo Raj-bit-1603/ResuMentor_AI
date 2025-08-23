@@ -12,24 +12,89 @@ st.set_page_config(page_title="ResuMentor AI", layout="wide")
 st.markdown("""
 <style>
 /* General font and background */
-.stApp {
+html, body, .stApp {
     background: linear-gradient(135deg, #1e3c72, #2a5298);
     font-family: 'Segoe UI', sans-serif;
     color: #f8fafc;
+    margin: 0;
+    padding: 0;
 }
+
+/* Utility containers used in your code later */
+.card {
+    background: #ffffff;
+    border-radius: 16px;
+    padding: 18px;
+    box-shadow: 0 6px 18px rgba(0,0,0,0.12);
+    margin: 12px 0;
+    color: #0f172a;
+}
+
+.score-circle {
+    width: 110px;
+    height: 110px;
+    border-radius: 50%;
+    color: #fff;
+    font-weight: 800;
+    font-size: 26px;
+    display: grid;
+    place-items: center;
+    margin: 0 auto 10px auto;
+}
+
+.sugg-box {
+    background: #f8fafc;
+    border: 1px solid #e2e8f0;
+    border-radius: 12px;
+    padding: 12px 14px;
+}
+
+.sugg-title {
+    font-weight: 700;
+    display: inline-block;
+    margin-bottom: 8px;
+    color: #0f172a;
+}
+
+.sugg-list {
+    margin: 0;
+    padding-left: 18px;
+    color: #0f172a;
+}
+
+.skill-container {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+}
+
+.tag {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 6px 10px;
+    border-radius: 999px;
+    font-size: 14px;
+    font-weight: 600;
+    border: 1px solid transparent;
+}
+.tag-green { background: #ecfdf5; color: #065f46; border-color: #a7f3d0; }
+.tag-red   { background: #fef2f2; color: #991b1b; border-color: #fecaca; }
 
 /* Navbar */
 .navbar {
     background: rgba(255, 255, 255, 0.95);
-    padding: 15px 30px;
+    padding: 15px 20px;
     border-radius: 16px;
     display: flex;
     justify-content: space-between;
     align-items: center;
+    gap: 12px;
     box-shadow: 0 4px 20px rgba(0,0,0,0.15);
     position: sticky;
     top: 0;
     z-index: 100;
+    flex-wrap: wrap; /* responsive */
 }
 
 .navbar h1 {
@@ -41,16 +106,18 @@ st.markdown("""
 
 .nav-links {
     display: flex;
-    gap: 30px;
+    gap: 16px;
+    flex-wrap: wrap; /* responsive */
+    margin-top: 4px;
 }
 
 .nav-links a {
     text-decoration: none;
     font-weight: 600;
-    font-size: 16px;
+    font-size: 15px;
     color: #374151;
     padding-bottom: 6px;
-    transition: all 0.3s ease;
+    transition: all 0.25s ease;
 }
 
 .nav-links a:hover {
@@ -64,32 +131,32 @@ st.markdown("""
     border-bottom: 3px solid #2563eb;
 }
 
-/* Card style */
+/* Section card */
 .section {
     background: white;
-    padding: 50px;
+    padding: 40px 24px;
     border-radius: 20px;
     box-shadow: 0 6px 18px rgba(0,0,0,0.12);
-    margin-top: 40px;
+    margin-top: 30px;
     color: #1e293b;
-    animation: fadeIn 1s ease-in;
+    animation: fadeIn 0.6s ease-in;
 }
 
+/* Headings */
 .section h2 {
     color: #2563eb;
-    margin-bottom: 15px;
+    margin-bottom: 12px;
     font-weight: 700;
 }
 
 /* Animations */
 @keyframes fadeIn {
-    from {opacity: 0; transform: translateY(20px);}
+    from {opacity: 0; transform: translateY(12px);}
     to {opacity: 1; transform: translateY(0);}
 }
-
 @keyframes float {
     0% { transform: translateY(0px);}
-    50% { transform: translateY(-10px);}
+    50% { transform: translateY(-8px);}
     100% { transform: translateY(0px);}
 }
 
@@ -102,30 +169,78 @@ st.markdown("""
 .cta {
     background: linear-gradient(135deg, #2563eb, #1e40af);
     color: white;
-    padding: 50px;
+    padding: 40px 24px;
     border-radius: 20px;
     text-align: center;
-    margin-top: 60px;
+    margin-top: 40px;
 }
 
 /* Footer */
 footer {
-    margin-top: 80px;
+    margin-top: 60px;
     text-align: center;
-    padding: 25px;
+    padding: 18px;
     background: rgba(255,255,255,0.9);
     border-radius: 16px;
     color: #475569;
     box-shadow: 0 -4px 14px rgba(0,0,0,0.08);
     font-weight: 500;
 }
+
+/* -------- Mobile-first responsive adjustments -------- */
+:root {
+    --pad: 16px;
+}
+
+button, .stButton button {
+    border-radius: 12px !important;
+}
+
+/* Hero & text sizes */
+@media (max-width: 768px) {
+    .navbar { padding: 14px 14px; }
+    .navbar h1 { font-size: 22px; }
+    .nav-links { gap: 10px; }
+    .section { padding: 22px 14px; }
+    h1, h2 { font-size: 22px !important; text-align: center; }
+    h3 { font-size: 18px !important; }
+    p, li, .stMarkdown { font-size: 15px !important; }
+    .cta { padding: 24px 16px; }
+
+    /* Ensure feature blocks and inline flex areas wrap nicely */
+    .flex-wrap, .features-flex, .how-flex, .testimonials-flex {
+        display: flex; flex-wrap: wrap; gap: 16px; justify-content: center;
+    }
+
+    /* Make primary CTAs full width on phone */
+    a > button, button {
+        width: 100% !important;
+    }
+
+    /* Tabs content spacing */
+    .stTabs { margin-top: 8px; }
+
+    /* Score circle smaller on phones */
+    .score-circle {
+        width: 84px; height: 84px; font-size: 22px;
+    }
+}
+
+/* Slightly larger tablets */
+@media (max-width: 1024px) {
+    .nav-links a { font-size: 14px; }
+}
 </style>
 """, unsafe_allow_html=True)
 
 # -------------------- Navbar --------------------
 pages = ["Home", "Resume Analyzer", "Career Advisor", "Mock Test", "Dashboard"]
+
+# ✅ Default always to Home unless a valid ?page= is present
 query_params = st.query_params
-active_page = query_params.get("page", "Home")
+active_page = query_params.get("page", None)
+if active_page not in pages:
+    active_page = "Home"
 
 def set_active_page(page):
     st.query_params.page = page
@@ -134,10 +249,27 @@ navbar_html = f"""
 <div class="navbar">
     <h1>ResuMentor AI</h1>
     <div class="nav-links">
-        {''.join([f'<a href="/?page={p}" class="{ "active-link" if p == active_page else ""}">{p}</a>' for p in pages])}
+        {''.join([f'<a href="/?page={p}" class="{{ "active-link" if p == active_page else ""}}">{p}</a>' for p in pages])}
     </div>
 </div>
 """
+# The f-string above renders braces for Streamlit to process variables; we’ll replace manually below:
+navbar_html = navbar_html.replace('{ "active-link" if p == active_page else ""}', 'active-link' if True else '')
+
+# Build links with active-state correctly
+links = []
+for p in pages:
+    cls = "active-link" if p == active_page else ""
+    links.append(f'<a href="/?page={p}" class="{cls}">{p}</a>')
+navbar_html = f"""
+<div class="navbar">
+    <h1>ResuMentor AI</h1>
+    <div class="nav-links">
+        {''.join(links)}
+    </div>
+</div>
+"""
+
 st.markdown(navbar_html, unsafe_allow_html=True)
 
 # -------------------- Page Content --------------------
@@ -145,14 +277,14 @@ if active_page == "Home":
     # Hero Section
     st.markdown("""
     <div class="section" style="text-align:center;">
-        <h1 style="font-size:48px; font-weight:800; color:#1e293b;">🚀 Empower Your Career with ResuMentor AI</h1>
-        <p style="font-size:20px; color:#475569; margin-top:15px; max-width:750px; margin-left:auto; margin-right:auto;">
+        <h1 style="font-size:42px; font-weight:800; color:#1e293b;">🚀 Empower Your Career with ResuMentor AI</h1>
+        <p style="font-size:18px; color:#475569; margin-top:12px; max-width:750px; margin-left:auto; margin-right:auto;">
             An all-in-one AI platform to analyze your resume, get personalized career advice, prepare with mock tests, 
             and track your career growth — built for students and professionals to succeed.
         </p>
         <br>
         <a href="/?page=Resume Analyzer">
-            <button style="padding:16px 34px; font-size:18px; font-weight:600; color:white; background:#2563eb; border:none; border-radius:12px; cursor:pointer; transition:0.3s;">
+            <button style="padding:14px 24px; font-size:16px; font-weight:600; color:white; background:#2563eb; border:none; border-radius:12px; cursor:pointer; transition:0.3s;">
                 ✨ Get Started
             </button>
         </a>
@@ -163,23 +295,23 @@ if active_page == "Home":
     st.markdown("""
     <div class="section" style="text-align:center;">
         <h2>✨ Why Choose ResuMentor AI?</h2>
-        <div style="display:flex; justify-content:space-around; margin-top:30px; flex-wrap:wrap;">
-            <div style="flex:1; min-width:250px; margin:15px;">
+        <div class="features-flex" style="display:flex; justify-content:space-around; margin-top:20px; flex-wrap:wrap; gap:16px;">
+            <div style="flex:1; min-width:220px; max-width:280px; margin:8px;">
                 <div class="icon">📄</div>
                 <h3>Resume Analyzer</h3>
                 <p>AI-powered resume feedback to improve your chances of landing interviews.</p>
             </div>
-            <div style="flex:1; min-width:250px; margin:15px;">
+            <div style="flex:1; min-width:220px; max-width:280px; margin:8px;">
                 <div class="icon">💼</div>
                 <h3>Career Advisor</h3>
                 <p>Get instant answers to career doubts with personalized AI guidance.</p>
             </div>
-            <div style="flex:1; min-width:250px; margin:15px;">
+            <div style="flex:1; min-width:220px; max-width:280px; margin:8px;">
                 <div class="icon">📝</div>
                 <h3>Mock Tests</h3>
                 <p>Practice aptitude & technical tests designed to simulate real interviews.</p>
             </div>
-            <div style="flex:1; min-width:250px; margin:15px;">
+            <div style="flex:1; min-width:220px; max-width:280px; margin:8px;">
                 <div class="icon">📊</div>
                 <h3>Dashboard</h3>
                 <p>Visualize your progress, resume score, and skill readiness over time.</p>
@@ -192,16 +324,16 @@ if active_page == "Home":
     st.markdown("""
     <div class="section" style="text-align:center;">
         <h2>⚡ How It Works</h2>
-        <div style="display:flex; justify-content:space-around; margin-top:30px; flex-wrap:wrap;">
-            <div style="flex:1; min-width:250px; margin:15px;">
+        <div class="how-flex" style="display:flex; justify-content:space-around; margin-top:20px; flex-wrap:wrap; gap:16px;">
+            <div style="flex:1; min-width:220px; max-width:300px; margin:8px;">
                 <h3>1️⃣ Upload Resume</h3>
                 <p>Upload your PDF/DOCX resume and get AI-powered analysis instantly.</p>
             </div>
-            <div style="flex:1; min-width:250px; margin:15px;">
+            <div style="flex:1; min-width:220px; max-width:300px; margin:8px;">
                 <h3>2️⃣ Get Insights</h3>
                 <p>Receive actionable suggestions to improve your resume and skills.</p>
             </div>
-            <div style="flex:1; min-width:250px; margin:15px;">
+            <div style="flex:1; min-width:220px; max-width:300px; margin:8px;">
                 <h3>3️⃣ Practice & Grow</h3>
                 <p>Take mock tests, get feedback, and track your improvement via dashboard.</p>
             </div>
@@ -213,16 +345,16 @@ if active_page == "Home":
     st.markdown("""
     <div class="section" style="text-align:center;">
         <h2>🌟 What Users Say</h2>
-        <div style="display:flex; justify-content:center; gap:20px; flex-wrap:wrap; margin-top:20px;">
-            <div style="flex:1; min-width:250px; background:#f8fafc; padding:25px; border-radius:12px; color:#1e293b;">
+        <div class="testimonials-flex" style="display:flex; justify-content:center; gap:16px; flex-wrap:wrap; margin-top:16px;">
+            <div style="flex:1; min-width:240px; max-width:340px; background:#f8fafc; padding:18px; border-radius:12px; color:#1e293b;">
                 <p>"ResuMentor helped me fix my resume and land my first internship!"</p>
                 <h4>- Priya, Student</h4>
             </div>
-            <div style="flex:1; min-width:250px; background:#f8fafc; padding:25px; border-radius:12px; color:#1e293b;">
+            <div style="flex:1; min-width:240px; max-width:340px; background:#f8fafc; padding:18px; border-radius:12px; color:#1e293b;">
                 <p>"The career advisor feature is like having a mentor available 24/7."</p>
                 <h4>- Rahul, Job Seeker</h4>
             </div>
-            <div style="flex:1; min-width:250px; background:#f8fafc; padding:25px; border-radius:12px; color:#1e293b;">
+            <div style="flex:1; min-width:240px; max-width:340px; background:#f8fafc; padding:18px; border-radius:12px; color:#1e293b;">
                 <p>"Mock tests gave me confidence before my actual interviews."</p>
                 <h4>- Anjali, Graduate</h4>
             </div>
@@ -234,15 +366,16 @@ if active_page == "Home":
     st.markdown("""
     <div class="cta">
         <h2>🚀 Ready to Boost Your Career?</h2>
-        <p style="font-size:18px; margin-top:10px;">Join ResuMentor AI today and take the first step towards success!</p>
+        <p style="font-size:16px; margin-top:8px;">Join ResuMentor AI today and take the first step towards success!</p>
         <br>
         <a href="/?page=Resume Analyzer">
-            <button style="padding:14px 28px; font-size:16px; font-weight:600; color:#2563eb; background:white; border:none; border-radius:12px; cursor:pointer;">
+            <button style="padding:12px 20px; font-size:15px; font-weight:600; color:#2563eb; background:white; border:none; border-radius:12px; cursor:pointer;">
                 Start Free Now
             </button>
         </a>
     </div>
     """, unsafe_allow_html=True)
+
 elif active_page == "Resume Analyzer":
     # ---------------------- Resume Analyzer ----------------------
     import pdfplumber
@@ -256,9 +389,6 @@ elif active_page == "Resume Analyzer":
     st.subheader("📄 AI-Powered Resume Analyzer")
     st.caption("Upload your resume and choose/paste a job description. Get ATS-style scoring, skill gaps, and AI suggestions to improve your match.")
     st.markdown('</div>', unsafe_allow_html=True)
-
-    # Predefined skills, helper functions, sample JDs are all included here (same as your provided code)
-    # ... (Insert the full helper functions & sample JD code here)
 
     # ---------------------- UI ----------------------
     with st.container():
@@ -307,7 +437,7 @@ elif active_page == "Resume Analyzer":
                 st.markdown('<div class="card">', unsafe_allow_html=True)
                 st.subheader("💡 AI Suggestions to Improve")
                 suggestions = generate_ai_suggestions(score, matched, missing, job_description, resume_text)
-                st.markdown('<div class="sung-box">', unsafe_allow_html=True)
+                st.markdown('<div class="sugg-box">', unsafe_allow_html=True)
                 st.markdown('<span class="sugg-title">🛠️ Focus Areas</span>', unsafe_allow_html=True)
                 st.markdown("<ul class='sugg-list'>" + "".join([f"<li>{s}</li>" for s in suggestions]) + "</ul>", unsafe_allow_html=True)
                 st.markdown('</div>', unsafe_allow_html=True)
@@ -343,7 +473,7 @@ elif active_page == "Career Advisor":
     # Title and description
     st.markdown(
         """
-        <div style="text-align:center; padding:20px;">
+        <div style="text-align:center; padding:20px;" class="section">
             <h2>💼 Career Guidance AI</h2>
             <p>Ask your career-related questions and get AI-powered suggestions instantly.</p>
         </div>
@@ -394,26 +524,22 @@ elif active_page == "Mock Test":
     import streamlit as st
 
     # -------------------- Page Config --------------------
+    # (kept as-is per your request; Streamlit ignores duplicates safely in most cases)
     st.set_page_config(page_title="ResuMentor - Mock Test", layout="centered")
 
     # -------------------- Custom CSS --------------------
     st.markdown("""
     <style>
-    /* Full page background */
     .stApp {
         background: linear-gradient(135deg, #1e3c72, #2a5298);
         background-attachment: fixed;
         font-family: 'Segoe UI', sans-serif;
     }
-
-    /* Title */
     h1, h2, h3 {
         text-align: center;
         color: #ffffff;
         font-weight: bold;
     }
-
-    /* Question box */
     .question-box {
         background-color: #ff7f50;
         color: white;
@@ -423,8 +549,6 @@ elif active_page == "Mock Test":
         font-size: 20px;
         box-shadow: 0px 4px 12px rgba(0,0,0,0.2);
     }
-
-    /* Option box */
     .stRadio > div {
         background-color: #f058ff;
         padding: 10px;
@@ -435,8 +559,6 @@ elif active_page == "Mock Test":
     .stRadio > div:hover {
         background-color: #db4afe;
     }
-
-    /* Buttons */
     .stButton button {
         background: linear-gradient(90deg, #00c6ff, #0072ff);
         color: white;
@@ -445,10 +567,14 @@ elif active_page == "Mock Test":
         font-weight: bold;
         border: none;
         box-shadow: 0px 4px 12px rgba(0,0,0,0.3);
+        width: 100%;
     }
     .stButton button:hover {
         background: linear-gradient(90deg, #0072ff, #00c6ff);
-        transform: scale(1.05);
+        transform: scale(1.02);
+    }
+    @media (max-width: 768px) {
+        .question-box { font-size: 18px; }
     }
     </style>
     """, unsafe_allow_html=True)
@@ -580,7 +706,6 @@ elif active_page == "Mock Test":
         if st.button("Restart"):
             st.session_state.page = "start"
             st.rerun()
-
 
 elif active_page == "Dashboard":
     # --- Dashboard Section ---
@@ -761,7 +886,6 @@ elif active_page == "Dashboard":
 
     else:
         st.warning("📤 Upload a CSV or click **Use Sample CSV** to get started.")
-
 
 # -------------------- Footer --------------------
 st.markdown("""
