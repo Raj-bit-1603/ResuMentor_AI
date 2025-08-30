@@ -11,224 +11,381 @@ st.set_page_config(page_title="ResuMentor AI", layout="wide")
 # -------------------- Custom CSS --------------------
 st.markdown("""
 <style>
-/* General font and background */
+/* ===========================================================
+   THEME SYSTEM — accessible in Light & Dark (auto-detect)
+   We ONLY changed CSS. All Python code remains the same.
+   =========================================================== */
+
+/* ---------- Color Tokens (Light default) ---------- */
+:root {
+  /* surface */
+  --bg: #f6f7fb;                /* app background */
+  --bg-accent: #eff1f6;         /* subtle blocks */
+  --card: #ffffff;              /* cards/sections */
+  --card-elev: 0 6px 18px rgba(0,0,0,.08);
+
+  /* text */
+  --text: #0f172a;              /* primary */
+  --muted: #475569;             /* secondary */
+  --link: #1d4ed8;
+
+  /* borders */
+  --border: #e5e7eb;
+
+  /* brand / accents */
+  --brand: #2563eb;             /* primary brand */
+  --brand-600: #1e40af;
+  --brand-700: #1d4ed8;
+
+  /* success / warn / danger */
+  --success-bg: #ecfdf5;
+  --success-text: #065f46;
+  --success-brd: #a7f3d0;
+
+  --danger-bg: #fef2f2;
+  --danger-text: #991b1b;
+  --danger-brd: #fecaca;
+
+  /* scores */
+  --score-bad: #b91c1c;
+  --score-mid: #d97706;
+  --score-good: #15803d;
+
+  /* gradients */
+  --hero-grad-1: #e8eefc;
+  --hero-grad-2: #f1f5ff;
+
+  /* CTA */
+  --cta-grad-1: #2563eb;
+  --cta-grad-2: #1e40af;
+
+  /* code/tabs */
+  --tab-bg: #f8fafc;
+
+  /* navbar */
+  --nav-bg: rgba(255,255,255,.9);
+  --nav-text: #334155;
+  --nav-shadow: 0 4px 20px rgba(0,0,0,.12);
+
+  /* footer */
+  --footer-bg: rgba(255,255,255,.9);
+  --footer-text: #475569;
+}
+
+/* ---------- Dark Mode Overrides ---------- */
+@media (prefers-color-scheme: dark) {
+  :root {
+    --bg: #0b1020;
+    --bg-accent: #0f162e;
+    --card: #111936;
+    --card-elev: 0 8px 24px rgba(0,0,0,.35);
+
+    --text: #e6e9f2;
+    --muted: #b8c1d9;
+    --link: #79a6ff;
+
+    --border: #27324d;
+
+    --brand: #6ca2ff;
+    --brand-600: #528bff;
+    --brand-700: #3c74ff;
+
+    --success-bg: #042e22;
+    --success-text: #9af6cf;
+    --success-brd: #1a9f7b;
+
+    --danger-bg: #2c0b0b;
+    --danger-text: #ffb4b4;
+    --danger-brd: #a33b3b;
+
+    --score-bad: #ef4444;
+    --score-mid: #f59e0b;
+    --score-good: #34d399;
+
+    --hero-grad-1: #0b1227;
+    --hero-grad-2: #0f1a3a;
+
+    --cta-grad-1: #3156da;
+    --cta-grad-2: #1d2f7a;
+
+    --tab-bg: #0f162e;
+
+    --nav-bg: rgba(15, 22, 46, .88);
+    --nav-text: #d6def8;
+    --nav-shadow: 0 6px 24px rgba(0,0,0,.45);
+
+    --footer-bg: rgba(17,25,54,.9);
+    --footer-text: #b8c1d9;
+  }
+}
+
+/* ---------- Global Canvas ---------- */
 html, body, .stApp {
-    background: linear-gradient(135deg, #1e3c72, #2a5298);
-    font-family: 'Segoe UI', sans-serif;
-    color: #f8fafc;
-    margin: 0;
-    padding: 0;
+  background: linear-gradient(135deg, var(--hero-grad-1), var(--hero-grad-2)) fixed;
+  font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+  color: var(--text);
+  margin: 0;
+  padding: 0;
 }
 
 /* Utility containers used in your code later */
 .card {
-    background: #ffffff;
-    border-radius: 16px;
-    padding: 18px;
-    box-shadow: 0 6px 18px rgba(0,0,0,0.12);
-    margin: 12px 0;
-    color: #0f172a;
+  background: var(--card);
+  border-radius: 16px;
+  padding: 18px;
+  box-shadow: var(--card-elev);
+  margin: 12px 0;
+  color: var(--text);
+  border: 1px solid var(--border);
 }
 
 .score-circle {
-    width: 110px;
-    height: 110px;
-    border-radius: 50%;
-    color: #fff;
-    font-weight: 800;
-    font-size: 26px;
-    display: grid;
-    place-items: center;
-    margin: 0 auto 10px auto;
+  width: 110px;
+  height: 110px;
+  border-radius: 50%;
+  color: #fff;
+  font-weight: 800;
+  font-size: 26px;
+  display: grid;
+  place-items: center;
+  margin: 0 auto 10px auto;
+  /* background color set inline in your Python; contrast ensured by palette */
 }
 
 .sugg-box {
-    background: #f8fafc;
-    border: 1px solid #e2e8f0;
-    border-radius: 12px;
-    padding: 12px 14px;
+  background: var(--tab-bg);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 12px 14px;
 }
 
 .sugg-title {
-    font-weight: 700;
-    display: inline-block;
-    margin-bottom: 8px;
-    color: #0f172a;
+  font-weight: 700;
+  display: inline-block;
+  margin-bottom: 8px;
+  color: var(--text);
 }
 
 .sugg-list {
-    margin: 0;
-    padding-left: 18px;
-    color: #0f172a;
+  margin: 0;
+  padding-left: 18px;
+  color: var(--text);
 }
 
 .skill-container {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 8px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
 }
 
 .tag {
-    display: inline-flex;
-    align-items: center;
-    gap: 6px;
-    padding: 6px 10px;
-    border-radius: 999px;
-    font-size: 14px;
-    font-weight: 600;
-    border: 1px solid transparent;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 10px;
+  border-radius: 999px;
+  font-size: 14px;
+  font-weight: 600;
+  border: 1px solid transparent;
 }
-.tag-green { background: #ecfdf5; color: #065f46; border-color: #a7f3d0; }
-.tag-red   { background: #fef2f2; color: #991b1b; border-color: #fecaca; }
+.tag-green { background: var(--success-bg); color: var(--success-text); border-color: var(--success-brd); }
+.tag-red   { background: var(--danger-bg);  color: var(--danger-text);  border-color: var(--danger-brd);  }
 
-/* Navbar */
+/* ---------- Navbar ---------- */
 .navbar {
-    background: rgba(255, 255, 255, 0.95);
-    padding: 15px 20px;
-    border-radius: 16px;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    gap: 12px;
-    box-shadow: 0 4px 20px rgba(0,0,0,0.15);
-    position: sticky;
-    top: 0;
-    z-index: 100;
-    flex-wrap: wrap; /* responsive */
+  background: var(--nav-bg);
+  padding: 15px 20px;
+  border-radius: 16px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+  box-shadow: var(--nav-shadow);
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  flex-wrap: wrap; /* responsive */
+  backdrop-filter: saturate(120%) blur(6px);
+  border: 1px solid var(--border);
 }
 
 .navbar h1 {
-    font-size: 26px;
-    color: #2563eb;
-    font-weight: bold;
-    margin: 0;
+  font-size: 26px;
+  color: var(--brand);
+  font-weight: 800;
+  margin: 0;
+  letter-spacing: .2px;
 }
 
 .nav-links {
-    display: flex;
-    gap: 16px;
-    flex-wrap: wrap; /* responsive */
-    margin-top: 4px;
+  display: flex;
+  gap: 16px;
+  flex-wrap: wrap; /* responsive */
+  margin-top: 4px;
 }
 
 .nav-links a {
-    text-decoration: none;
-    font-weight: 600;
-    font-size: 15px;
-    color: #374151;
-    padding-bottom: 6px;
-    transition: all 0.25s ease;
+  text-decoration: none;
+  font-weight: 700;
+  font-size: 15px;
+  color: var(--nav-text);
+  padding-bottom: 6px;
+  transition: all 0.2s ease;
+  border-bottom: 3px solid transparent;
 }
-
 .nav-links a:hover {
-    color: #2563eb;
-    border-bottom: 3px solid #2563eb;
-    transform: translateY(-2px);
+  color: var(--brand);
+  border-bottom-color: var(--brand);
+  transform: translateY(-2px);
 }
-
 .active-link {
-    color: #2563eb;
-    border-bottom: 3px solid #2563eb;
+  color: var(--brand);
+  border-bottom: 3px solid var(--brand);
 }
 
-/* Section card */
+/* ---------- Section card ---------- */
 .section {
-    background: white;
-    padding: 40px 24px;
-    border-radius: 20px;
-    box-shadow: 0 6px 18px rgba(0,0,0,0.12);
-    margin-top: 30px;
-    color: #1e293b;
-    animation: fadeIn 0.6s ease-in;
+  background: var(--card);
+  padding: 40px 24px;
+  border-radius: 20px;
+  box-shadow: var(--card-elev);
+  margin-top: 30px;
+  color: var(--text);
+  animation: fadeIn 0.6s ease-in;
+  border: 1px solid var(--border);
 }
 
 /* Headings */
 .section h2 {
-    color: #2563eb;
-    margin-bottom: 12px;
-    font-weight: 700;
+  color: var(--brand);
+  margin-bottom: 12px;
+  font-weight: 800;
 }
 
 /* Animations */
 @keyframes fadeIn {
-    from {opacity: 0; transform: translateY(12px);}
-    to {opacity: 1; transform: translateY(0);}
+  from {opacity: 0; transform: translateY(12px);}
+  to   {opacity: 1; transform: translateY(0);}
 }
 @keyframes float {
-    0% { transform: translateY(0px);}
-    50% { transform: translateY(-8px);}
-    100% { transform: translateY(0px);}
+  0% { transform: translateY(0px);}
+  50% { transform: translateY(-8px);}
+  100% { transform: translateY(0px);}
 }
 
 .icon {
-    font-size: 40px;
-    animation: float 3s ease-in-out infinite;
+  font-size: 40px;
+  animation: float 3s ease-in-out infinite;
 }
 
-/* CTA Banner */
+/* ---------- CTA Banner ---------- */
 .cta {
-    background: linear-gradient(135deg, #2563eb, #1e40af);
-    color: white;
-    padding: 40px 24px;
-    border-radius: 20px;
-    text-align: center;
-    margin-top: 40px;
+  background: linear-gradient(135deg, var(--cta-grad-1), var(--cta-grad-2));
+  color: #ffffff;
+  padding: 40px 24px;
+  border-radius: 20px;
+  text-align: center;
+  margin-top: 40px;
+  box-shadow: var(--card-elev);
+  border: 1px solid rgba(255,255,255,.08);
 }
 
-/* Footer */
-footer {
-    margin-top: 60px;
-    text-align: center;
-    padding: 18px;
-    background: rgba(255,255,255,0.9);
-    border-radius: 16px;
-    color: #475569;
-    box-shadow: 0 -4px 14px rgba(0,0,0,0.08);
-    font-weight: 500;
+/* ---------- Buttons ---------- */
+button, .stButton button {
+  border-radius: 12px !important;
+  font-weight: 700;
+  border: 1px solid transparent;
 }
+a > button, button {
+  transition: transform .15s ease, box-shadow .15s ease, background .15s ease;
+}
+a > button:hover, .stButton button:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 10px 24px rgba(0,0,0,.15);
+}
+
+/* ---------- Footer ---------- */
+footer {
+  margin-top: 60px;
+  text-align: center;
+  padding: 18px;
+  background: var(--footer-bg);
+  border-radius: 16px;
+  color: var(--footer-text);
+  box-shadow: 0 -4px 14px rgba(0,0,0,0.08);
+  font-weight: 600;
+  border: 1px solid var(--border);
+}
+footer a { color: var(--link); text-decoration: none; }
+footer a:hover { text-decoration: underline; }
 
 /* -------- Mobile-first responsive adjustments -------- */
-:root {
-    --pad: 16px;
-}
-
-button, .stButton button {
-    border-radius: 12px !important;
-}
+:root { --pad: 16px; }
 
 /* Hero & text sizes */
 @media (max-width: 768px) {
-    .navbar { padding: 14px 14px; }
-    .navbar h1 { font-size: 22px; }
-    .nav-links { gap: 10px; }
-    .section { padding: 22px 14px; }
-    h1, h2 { font-size: 22px !important; text-align: center; }
-    h3 { font-size: 18px !important; }
-    p, li, .stMarkdown { font-size: 15px !important; }
-    .cta { padding: 24px 16px; }
+  .navbar { padding: 14px 14px; }
+  .navbar h1 { font-size: 22px; }
+  .nav-links { gap: 10px; }
+  .section { padding: 22px 14px; }
+  h1, h2 { font-size: 22px !important; text-align: center; }
+  h3 { font-size: 18px !important; }
+  p, li, .stMarkdown { font-size: 15px !important; }
+  .cta { padding: 24px 16px; }
 
-    /* Ensure feature blocks and inline flex areas wrap nicely */
-    .flex-wrap, .features-flex, .how-flex, .testimonials-flex {
-        display: flex; flex-wrap: wrap; gap: 16px; justify-content: center;
-    }
+  /* Ensure feature blocks and inline flex areas wrap nicely */
+  .flex-wrap, .features-flex, .how-flex, .testimonials-flex {
+    display: flex; flex-wrap: wrap; gap: 16px; justify-content: center;
+  }
 
-    /* Make primary CTAs full width on phone */
-    a > button, button {
-        width: 100% !important;
-    }
+  /* Make primary CTAs full width on phone */
+  a > button, button {
+    width: 100% !important;
+  }
 
-    /* Tabs content spacing */
-    .stTabs { margin-top: 8px; }
+  /* Tabs content spacing */
+  .stTabs { margin-top: 8px; }
 
-    /* Score circle smaller on phones */
-    .score-circle {
-        width: 84px; height: 84px; font-size: 22px;
-    }
+  /* Score circle smaller on phones */
+  .score-circle {
+    width: 84px; height: 84px; font-size: 22px;
+  }
 }
 
 /* Slightly larger tablets */
 @media (max-width: 1024px) {
-    .nav-links a { font-size: 14px; }
+  .nav-links a { font-size: 14px; }
+}
+
+/* ---------- Components your code uses inline ---------- */
+.progress, .stProgress > div > div {
+  background: var(--bg-accent) !important;
+}
+
+/* Ensure default Streamlit widgets blend with theme */
+.stTextInput > div > div input,
+.stTextArea textarea,
+.stSelectbox div[data-baseweb="select"] input {
+  color: var(--text) !important;
+}
+.stTextArea textarea,
+.stTextInput > div > div,
+.stSelectbox div[data-baseweb="select"] {
+  background: var(--card) !important;
+  border: 1px solid var(--border) !important;
+  box-shadow: none !important;
+}
+.stSelectbox svg { fill: var(--muted) !important; }
+
+/* Links inside sections */
+.section a { color: var(--link); }
+
+/* Pie chart labels remain readable on dark backgrounds */
+svg text { fill: currentColor; color: var(--text); }
+
+/* Improve table contrast */
+[data-testid="stDataFrame"] div, [data-testid="stTable"] {
+  color: var(--text);
 }
 </style>
 """, unsafe_allow_html=True)
@@ -277,14 +434,14 @@ if active_page == "Home":
     # Hero Section
     st.markdown("""
     <div class="section" style="text-align:center;">
-        <h1 style="font-size:42px; font-weight:800; color:#1e293b;">🚀 Empower Your Career with ResuMentor AI</h1>
-        <p style="font-size:18px; color:#475569; margin-top:12px; max-width:750px; margin-left:auto; margin-right:auto;">
+        <h1 style="font-size:42px; font-weight:800; color:var(--text);">🚀 Empower Your Career with ResuMentor AI</h1>
+        <p style="font-size:18px; color:var(--muted); margin-top:12px; max-width:750px; margin-left:auto; margin-right:auto;">
             An all-in-one AI platform to analyze your resume, get personalized career advice, prepare with mock tests, 
             and track your career growth — built for students and professionals to succeed.
         </p>
         <br>
         <a href="/?page=Resume Analyzer">
-            <button style="padding:14px 24px; font-size:16px; font-weight:600; color:white; background:#2563eb; border:none; border-radius:12px; cursor:pointer; transition:0.3s;">
+            <button style="padding:14px 24px; font-size:16px; font-weight:600; color:white; background:var(--brand); border:none; border-radius:12px; cursor:pointer;">
                 ✨ Get Started
             </button>
         </a>
@@ -346,15 +503,15 @@ if active_page == "Home":
     <div class="section" style="text-align:center;">
         <h2>🌟 What Users Say</h2>
         <div class="testimonials-flex" style="display:flex; justify-content:center; gap:16px; flex-wrap:wrap; margin-top:16px;">
-            <div style="flex:1; min-width:240px; max-width:340px; background:#f8fafc; padding:18px; border-radius:12px; color:#1e293b;">
+            <div style="flex:1; min-width:240px; max-width:340px; background:var(--tab-bg); padding:18px; border-radius:12px; color:var(--text); border:1px solid var(--border);">
                 <p>"ResuMentor helped me fix my resume and land my first internship!"</p>
                 <h4>- Priya, Student</h4>
             </div>
-            <div style="flex:1; min-width:240px; max-width:340px; background:#f8fafc; padding:18px; border-radius:12px; color:#1e293b;">
+            <div style="flex:1; min-width:240px; max-width:340px; background:var(--tab-bg); padding:18px; border-radius:12px; color:var(--text); border:1px solid var(--border);">
                 <p>"The career advisor feature is like having a mentor available 24/7."</p>
                 <h4>- Rahul, Job Seeker</h4>
             </div>
-            <div style="flex:1; min-width:240px; max-width:340px; background:#f8fafc; padding:18px; border-radius:12px; color:#1e293b;">
+            <div style="flex:1; min-width:240px; max-width:340px; background:var(--tab-bg); padding:18px; border-radius:12px; color:var(--text); border:1px solid var(--border);">
                 <p>"Mock tests gave me confidence before my actual interviews."</p>
                 <h4>- Anjali, Graduate</h4>
             </div>
@@ -369,7 +526,7 @@ if active_page == "Home":
         <p style="font-size:16px; margin-top:8px;">Join ResuMentor AI today and take the first step towards success!</p>
         <br>
         <a href="/?page=Resume Analyzer">
-            <button style="padding:12px 20px; font-size:15px; font-weight:600; color:#2563eb; background:white; border:none; border-radius:12px; cursor:pointer;">
+            <button style="padding:12px 20px; font-size:15px; font-weight:700; color:var(--brand); background:white; border:none; border-radius:12px; cursor:pointer;">
                 Start Free Now
             </button>
         </a>
@@ -531,36 +688,39 @@ elif active_page == "Mock Test":
     st.markdown("""
     <style>
     .stApp {
-        background: linear-gradient(135deg, #1e3c72, #2a5298);
+        background: linear-gradient(135deg, var(--hero-grad-1), var(--hero-grad-2));
         background-attachment: fixed;
         font-family: 'Segoe UI', sans-serif;
     }
     h1, h2, h3 {
         text-align: center;
-        color: #ffffff;
+        color: var(--text);
         font-weight: bold;
     }
     .question-box {
-        background-color: #ff7f50;
+        background-color: var(--brand);
         color: white;
         padding: 20px;
         border-radius: 15px;
         margin-bottom: 15px;
         font-size: 20px;
-        box-shadow: 0px 4px 12px rgba(0,0,0,0.2);
+        box-shadow: var(--card-elev);
+        border: 1px solid var(--border);
     }
     .stRadio > div {
-        background-color: #f058ff;
+        background-color: var(--tab-bg);
         padding: 10px;
         border-radius: 8px;
         margin-bottom: 8px;
-        transition: 0.3s;
+        transition: 0.2s;
+        border: 1px solid var(--border);
+        color: var(--text);
     }
     .stRadio > div:hover {
-        background-color: #db4afe;
+        background-color: var(--bg-accent);
     }
     .stButton button {
-        background: linear-gradient(90deg, #00c6ff, #0072ff);
+        background: linear-gradient(90deg, var(--brand), var(--brand-600));
         color: white;
         border-radius: 10px;
         padding: 10px 25px;
@@ -570,7 +730,7 @@ elif active_page == "Mock Test":
         width: 100%;
     }
     .stButton button:hover {
-        background: linear-gradient(90deg, #0072ff, #00c6ff);
+        background: linear-gradient(90deg, var(--brand-600), var(--brand));
         transform: scale(1.02);
     }
     @media (max-width: 768px) {
@@ -890,6 +1050,6 @@ elif active_page == "Dashboard":
 # -------------------- Footer --------------------
 st.markdown("""
 <footer>
-    © 2025 ResuMentor AI | All Rights Reserved | <a href="https://linkedin.com" target="_blank">LinkedIn</a> | <a href="https://github.com" target="_blank">GitHub</a>
+    © 2025 ResuMentor AI | All Rights Reserved | <a href="https://www.linkedin.com/in/raj-mehra-499406253" target="_blank">LinkedIn</a> | <a href="https://github.com/Raj-bit-1603" target="_blank">GitHub</a>
 </footer>
 """, unsafe_allow_html=True)
